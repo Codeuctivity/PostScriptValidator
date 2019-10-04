@@ -34,7 +34,7 @@ namespace PostScriptValidator
         private bool isInitilized;
         private bool customGhostscriptlocation;
         private bool disposed;
-        private object lockObject;
+        private readonly object lockObject = new object();
         private const string c_maskedQuote = "\"";
         /// <summary>
         /// Use this constructor to use the embedded ghostscript binaries on windows, or guess the location on linux 
