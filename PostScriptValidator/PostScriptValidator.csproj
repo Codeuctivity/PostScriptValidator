@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -8,14 +7,18 @@
     <PackageTags>Postscript ps ghostscript</PackageTags>
     <Authors>Stefan Seeland</Authors>
     <Company>Codeuctivity</Company>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.1</Version>
     <PackageIconUrl>https://avatars3.githubusercontent.com/u/8453155?v=2&amp;s=200</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Codeuctivity/PostscriptValidatorApi</PackageProjectUrl>
     <Description>Postscript validator does some basic validation of postscript files.</Description>
     <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <AssemblyOriginatorKeyFile>PostScriptValidator.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
