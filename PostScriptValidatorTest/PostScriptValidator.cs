@@ -31,10 +31,10 @@ namespace Tests
             }
         }
         [Test]
-        public void ShouldNotFailOnMultipleDisposeCallse()
+        public void ShouldNotFailOnMultipleDisposeCalls()
         {
             var postscriptValidator = new PostScriptValidator.PostScriptValidator();
-            postscriptValidator.Validate(@"./TestData/valid.pdf");
+            postscriptValidator.Validate(@"./TestData/valid.ps");
             postscriptValidator.Dispose();
             postscriptValidator.Dispose();
         }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace PostScriptValidator
@@ -12,7 +13,7 @@ namespace PostScriptValidator
     /// </summary>
     public class PostScriptValidator : IDisposable
     {
-        private string _pathGhostscriptDirectory;
+        private string pathGhostscriptDirectory;
         /// <summary>
         /// Used Path to ghostscript bin 
         /// </summary>
@@ -30,15 +31,16 @@ namespace PostScriptValidator
 
         public string ErrorMessage { get; private set; }
 
-        private bool _isInitilized;
-        private bool _customGhostscriptlocation;
+        private bool isInitilized;
+        private bool customGhostscriptlocation;
+        private bool disposed;
+        private object lockObject;
         private const string c_maskedQuote = "\"";
         /// <summary>
         /// Use this constructor to use the embedded ghostscript binaries on windows, or guess the location on linux 
         /// </summary>
         public PostScriptValidator()
         {
-            _customGhostscriptlocation = false;
         }
         /// <summary>
         /// Use this constructor to use custom ghostscritp bins, e.g. for ubuntu 18.04 /usr/bin/gs
@@ -46,8 +48,8 @@ namespace PostScriptValidator
         /// <param name="customPathToGhostscriptBin"></param>
         public PostScriptValidator(string customPathToGhostscriptBin)
         {
-            _customGhostscriptlocation = false;
-            _isInitilized = true;
+            customGhostscriptlocation = false;
+            isInitilized = true;
         }
         /// <summary>
         /// Validates a ps by trying to parse it using ghostscript
@@ -94,18 +96,34 @@ namespace PostScriptValidator
 
         private void IntiPathToGhostscriptBin()
         {
-            if (_isInitilized)
+            if (isInitilized)
             {
                 return;
             }
+            isInitilized = true;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
 
-            _pathGhostscriptDirectory = Path.Combine(Path.GetTempPath(), "Ghostscript" + Guid.NewGuid());
-            Directory.CreateDirectory(_pathGhostscriptDirectory);
+                lock (lockObject)
+                {
+                    pathGhostscriptDirectory = Path.Combine(Path.GetTempPath(), "Ghostscript" + Guid.NewGuid());
+                    Directory.CreateDirectory(pathGhostscriptDirectory);
 
-            ExtractBinaryFromManifest("PostScriptValidator.gs9.27.zip");
-            GhostscriptBinPath = Path.Combine(_pathGhostscriptDirectory, @"gs9.27\bin", "gswin32c.exe");
+                    ExtractBinaryFromManifest("PostScriptValidator.gs9.27.zip");
+                    GhostscriptBinPath = Path.Combine(pathGhostscriptDirectory, @"gs9.27\bin", "gswin32c.exe");
 
-            _isInitilized = true;
+                    isInitilized = true;
+                }
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                GhostscriptBinPath = "/usr/bin/gs";
+                customGhostscriptlocation = true;
+            }
+            else
+            {
+                throw new NotImplementedException("Sorry, only supporting linux and windows.");
+            }
         }
         private static string GetStreamOutput(StreamReader stream)
         {
@@ -117,7 +135,7 @@ namespace PostScriptValidator
 
         private void ExtractBinaryFromManifest(string resourceName)
         {
-            var pathZipGhostscript = Path.Combine(_pathGhostscriptDirectory, "gs9.27.zip");
+            var pathZipGhostscript = Path.Combine(pathGhostscriptDirectory, "gs9.27.zip");
             var assembly = Assembly.GetExecutingAssembly();
 
             using (var stream = assembly.GetManifestResourceStream(resourceName))
@@ -126,17 +144,34 @@ namespace PostScriptValidator
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.CopyTo(fileStream);
             }
-            ZipFile.ExtractToDirectory(pathZipGhostscript, _pathGhostscriptDirectory);
+            ZipFile.ExtractToDirectory(pathZipGhostscript, pathGhostscriptDirectory);
         }
         /// <summary>
         /// Disposing ghostscript bins
         /// </summary>
         public void Dispose()
         {
-            if (!_customGhostscriptlocation)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposing ghostscript bins
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
             {
-                Directory.Delete(_pathGhostscriptDirectory, true);
+                if (!customGhostscriptlocation)
+                {
+                    Directory.Delete(pathGhostscriptDirectory, true);
+                }
             }
+
+            disposed = true;
         }
     }
 }
