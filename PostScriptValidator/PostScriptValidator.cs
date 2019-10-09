@@ -30,7 +30,11 @@ namespace PostScriptValidator
         /// <value>Can give you some hints if ghostscript failes to parse the validated postscript file</value>
 
         public string ErrorMessage { get; private set; }
-
+        /// <summary>
+        /// Last stdout output from ghostscript
+        /// </summary>
+        /// <value>Contains the stdout of the last validation session of ghostscript</value>
+        public string StandardOutput { get; private set; }
         private bool isInitilized;
         private bool customGhostscriptlocation;
         private bool disposed;
@@ -80,16 +84,17 @@ namespace PostScriptValidator
                 startInfo.Arguments = string.Concat(arguments);
                 process.Start();
 
-                var outputResult = GetStreamOutput(process.StandardOutput);
-                var errorResult = GetStreamOutput(process.StandardError);
+                StandardOutput = GetStreamOutput(process.StandardOutput);
+                ErrorMessage = GetStreamOutput(process.StandardError);
 
                 process.WaitForExit();
-
-                if (process.ExitCode == 0 && string.IsNullOrEmpty(errorResult))
-                    return true;
-
                 ExitCode = process.ExitCode;
-                ErrorMessage = errorResult;
+
+                if (process.ExitCode == 0 && string.IsNullOrEmpty(ErrorMessage))
+                {
+                    return true;
+                }
+
                 return false;
             }
         }
@@ -161,7 +166,9 @@ namespace PostScriptValidator
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {

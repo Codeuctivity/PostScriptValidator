@@ -10,6 +10,7 @@
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
     <Version>1.0.1</Version>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageIconUrl>https://avatars3.githubusercontent.com/u/8453155?v=2&amp;s=200</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Codeuctivity/PostscriptValidatorApi</PackageProjectUrl>
     <Description>Postscript validator does some basic validation of postscript files.</Description>
