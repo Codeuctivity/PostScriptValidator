@@ -3,13 +3,14 @@ skip_tags: true
 image: Visual Studio 2019
 configuration: Release
 before_build:
-- ps: >-
+- ps: 
     nuget restore
-
     . "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools\x64\sn.exe" -k ./PostScriptValidator/PostScriptValidator.snk
+
 build:
   project: PostScriptValidator.sln
   verbosity: minimal
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -21,10 +22,13 @@ dotnet_csproj:
 
 artifacts:
 - path: '**\PostScriptValidator.*.nupkg'
+
 deploy:
 - provider: NuGet
   api_key:
-    secure: uam/dXnhJv544YdAQNP+mKC9fkL7UFQydK/55TWjozWEswDWNUBh/Mq/WLv8Fa8U
+    secure: BAGacXk+5m7jd8EvWW6wkYhoVml39WAi7n2Z0odVUKUq5SeWLqixvkPA1I+KbQ1r
+  on:
+    branch: master
 - provider: GitHub
   auth_token:
     secure: nr/Bs1CExU8FMlqvNgtkCcHPBqi+JaIgL0d0vNkQx5AzklU+u/Dt6NqhWlh94duJ
