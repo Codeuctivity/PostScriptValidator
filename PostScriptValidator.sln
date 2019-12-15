@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostScriptValidator", "PostScriptValidator\PostScriptValidator.csproj", "{7CD8A738-B07B-4690-8215-1D38403EEBD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostScriptValidator", "PostScriptValidator\PostScriptValidator.csproj", "{7CD8A738-B07B-4690-8215-1D38403EEBD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostScriptValidatorTest", "PostScriptValidatorTest\PostScriptValidatorTest.csproj", "{CAFDA21C-8F7B-4B96-95D2-34CCD9755FF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostScriptValidatorTest", "PostScriptValidatorTest\PostScriptValidatorTest.csproj", "{CAFDA21C-8F7B-4B96-95D2-34CCD9755FF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C488C313-51AE-4614-8F69-BC6853E81991}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
