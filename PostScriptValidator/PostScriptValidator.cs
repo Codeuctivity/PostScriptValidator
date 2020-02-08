@@ -62,13 +62,63 @@ namespace PostScriptValidator
         /// <returns>True for parseable postscript files</returns>
         public bool Validate(string pathToPsFile)
         {
-            IntiPathToGhostscriptBin();
-            var absolutePathToPsFile = Path.GetFullPath(pathToPsFile);
+            string absolutePathToPsFile = getAbsoluteFilePath(pathToPsFile);
+
+            //https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
+            var ghostScriptArguments = new string[] { "-sDEVICE=nullpage -dNOPAUSE -dBATCH ", c_maskedQuote, absolutePathToPsFile, c_maskedQuote };
+
+            var ghostScriptCommandResult = GhostScriptCommand(ghostScriptArguments);
+
+            if (ghostScriptCommandResult.ExitCode == 0 && string.IsNullOrEmpty(ghostScriptCommandResult.ErrorMessage))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Embedds fonts in pdf
+        /// </summary>
+        /// <param name="pathToPdfFile"></param>
+        /// <param name="pathToPdfFileWithEmbeddedFonts"></param>
+        public void EmbedFonts(string pathToPdfFile, string pathToPdfFileWithEmbeddedFonts)
+        {
+            string absolutePathToPdfFile = getAbsoluteFilePath(pathToPdfFile);
+
+            //https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
+
+            var ghostScriptArguments =
+            new string[] { " -dSAFER -dNOPLATFONTS -dNOPAUSE -dPDFA -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dMaxSubsetPct=100 -dSubsetFonts=true -dEmbedAllFonts=true -sOutputFile=",
+            c_maskedQuote,
+            pathToPdfFileWithEmbeddedFonts,
+            c_maskedQuote,
+            " -f ",
+            c_maskedQuote,
+            absolutePathToPdfFile,
+            c_maskedQuote };
+
+            var ghostScriptCommandResult = GhostScriptCommand(ghostScriptArguments);
+
+            if (ghostScriptCommandResult.ExitCode != 0)
+                throw new PostScriptValidatorException(ghostScriptCommandResult.ErrorMessage);
+        }
+
+        private static string getAbsoluteFilePath(string pathToPdfFile)
+        {
+            var absolutePathToPsFile = Path.GetFullPath(pathToPdfFile);
 
             if (!File.Exists(absolutePathToPsFile))
             {
                 throw new FileNotFoundException(absolutePathToPsFile + " not found");
             }
+
+            return absolutePathToPsFile;
+        }
+
+        private CommandResult GhostScriptCommand(string[] ghostScriptArguments)
+        {
+            IntiPathToGhostscriptBin();
 
             using (var process = new Process())
             {
@@ -79,9 +129,7 @@ namespace PostScriptValidator
                 process.StartInfo.CreateNoWindow = true;
 
                 var startInfo = process.StartInfo;
-                //https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
-                var arguments = new[] { "-sDEVICE=nullpage -dNOPAUSE -dBATCH ", c_maskedQuote, absolutePathToPsFile, c_maskedQuote };
-                startInfo.Arguments = string.Concat(arguments);
+                startInfo.Arguments = string.Concat(ghostScriptArguments);
                 process.Start();
 
                 StandardOutput = GetStreamOutput(process.StandardOutput);
@@ -90,12 +138,7 @@ namespace PostScriptValidator
                 process.WaitForExit();
                 ExitCode = process.ExitCode;
 
-                if (process.ExitCode == 0 && string.IsNullOrEmpty(ErrorMessage))
-                {
-                    return true;
-                }
-
-                return false;
+                return new CommandResult(StandardOutput, ErrorMessage, process.ExitCode);
             }
         }
 
@@ -172,7 +215,7 @@ namespace PostScriptValidator
 
             if (disposing)
             {
-                if (!customGhostscriptlocation)
+                if (!customGhostscriptlocation && Directory.Exists(pathGhostscriptDirectory))
                 {
                     Directory.Delete(pathGhostscriptDirectory, true);
                 }

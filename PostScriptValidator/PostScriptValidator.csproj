@@ -22,10 +22,15 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PackageIcon>NugetIcon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="gs9.27.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NugetIcon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
