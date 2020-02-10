@@ -86,17 +86,17 @@ namespace PostScriptValidator
         {
             string absolutePathToPdfFile = getAbsoluteFilePath(pathToPdfFile);
 
-            //https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
+            // https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
 
             var ghostScriptArguments =
             new string[] { " -dSAFER -dNOPLATFONTS -dNOPAUSE -dPDFA -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dMaxSubsetPct=100 -dSubsetFonts=true -dEmbedAllFonts=true -sOutputFile=",
-            c_maskedQuote,
-            pathToPdfFileWithEmbeddedFonts,
-            c_maskedQuote,
-            " -f ",
-            c_maskedQuote,
-            absolutePathToPdfFile,
-            c_maskedQuote };
+                c_maskedQuote,
+                pathToPdfFileWithEmbeddedFonts,
+                c_maskedQuote,
+                " -f ",
+                c_maskedQuote,
+                absolutePathToPdfFile,
+                c_maskedQuote };
 
             var ghostScriptCommandResult = GhostScriptCommand(ghostScriptArguments);
 

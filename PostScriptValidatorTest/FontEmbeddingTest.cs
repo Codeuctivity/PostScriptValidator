@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Tests
 {
@@ -14,11 +15,10 @@ namespace Tests
                 using (var pdfAValidator = new PdfAValidator.PdfAValidator())
                 {
                     var outputName = Guid.NewGuid().ToString() + ".pdf";
-
                     postscriptValidator.EmbedFonts(@"./TestData/FontsNotEmbedded.pdf", outputName);
                     Assert.That(File.Exists(outputName));
-                    var result = pdfAValidator.Validate(outputName);
-                    Assert.True(result);
+                    var resultOutcome = pdfAValidator.ValidateWithDetailedReport(outputName);
+                    Assert.False(resultOutcome.Jobs.Job.ValidationReport.Details.Rule.Any(_ => _.Clause == "6.3.5"));
                     File.Delete(outputName);
                 }
             }

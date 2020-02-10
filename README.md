@@ -19,3 +19,13 @@ using (var postscriptValidator = new PostScriptValidator.PostScriptValidator())
     Assert.True(result);
 }
 ```
+
+# Dependencies
+
+Windows: 
+* none 
+
+Ubuntu: 
+```bash
+suod apt install ghostscript
+```
