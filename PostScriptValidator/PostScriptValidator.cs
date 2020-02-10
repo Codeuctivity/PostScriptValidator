@@ -65,7 +65,7 @@ namespace PostScriptValidator
             string absolutePathToPsFile = getAbsoluteFilePath(pathToPsFile);
 
             //https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
-            var ghostScriptArguments = new string[] { "-sDEVICE=nullpage -dNOPAUSE -dBATCH ", c_maskedQuote, absolutePathToPsFile, c_maskedQuote };
+            var ghostScriptArguments = new[] { "-sDEVICE=nullpage -dNOPAUSE -dBATCH ", c_maskedQuote, absolutePathToPsFile, c_maskedQuote };
 
             var ghostScriptCommandResult = GhostScriptCommand(ghostScriptArguments);
 
@@ -89,7 +89,7 @@ namespace PostScriptValidator
             // https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
 
             var ghostScriptArguments =
-            new string[] { " -dSAFER -dNOPLATFONTS -dNOPAUSE -dPDFA -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dMaxSubsetPct=100 -dSubsetFonts=true -dEmbedAllFonts=true -sOutputFile=",
+            new[] { " -dSAFER -dNOPLATFONTS -dNOPAUSE -dPDFA -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dMaxSubsetPct=100 -dSubsetFonts=true -dEmbedAllFonts=true -sOutputFile=",
                 c_maskedQuote,
                 pathToPdfFileWithEmbeddedFonts,
                 c_maskedQuote,
@@ -101,7 +101,9 @@ namespace PostScriptValidator
             var ghostScriptCommandResult = GhostScriptCommand(ghostScriptArguments);
 
             if (ghostScriptCommandResult.ExitCode != 0)
+            {
                 throw new PostScriptValidatorException(ghostScriptCommandResult.ErrorMessage);
+            }
         }
 
         private static string getAbsoluteFilePath(string pathToPdfFile)
