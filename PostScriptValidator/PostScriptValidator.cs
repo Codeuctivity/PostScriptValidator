@@ -14,38 +14,45 @@ namespace PostScriptValidator
     public class PostScriptValidator : IDisposable
     {
         private string pathGhostscriptDirectory;
+
         /// <summary>
-        /// Used Path to ghostscript bin 
+        /// Used Path to ghostscript bin
         /// </summary>
         /// <value>Path to ghostscript bin</value>
         public string GhostscriptBinPath { get; private set; }
+
         /// <summary>
         /// Last exitcode from ghostscript
         /// </summary>
         /// <value>Is 0 if ghostscript could parse the validated postscript file</value>
         public int ExitCode { get; private set; }
+
         /// <summary>
         /// Last stderr output from ghostscript
         /// </summary>
         /// <value>Can give you some hints if ghostscript failes to parse the validated postscript file</value>
 
         public string ErrorMessage { get; private set; }
+
         /// <summary>
         /// Last stdout output from ghostscript
         /// </summary>
         /// <value>Contains the stdout of the last validation session of ghostscript</value>
         public string StandardOutput { get; private set; }
+
         private bool isInitilized;
         private bool customGhostscriptlocation;
         private bool disposed;
         private readonly object lockObject = new object();
         private const string c_maskedQuote = "\"";
+
         /// <summary>
-        /// Use this constructor to use the embedded ghostscript binaries on windows, or guess the location on linux 
+        /// Use this constructor to use the embedded ghostscript binaries on windows, or guess the location on linux
         /// </summary>
         public PostScriptValidator()
         {
         }
+
         /// <summary>
         /// Use this constructor to use custom ghostscritp bins, e.g. for ubuntu 18.04 /usr/bin/gs
         /// </summary>
@@ -55,6 +62,7 @@ namespace PostScriptValidator
             customGhostscriptlocation = false;
             isInitilized = true;
         }
+
         /// <summary>
         /// Validates a ps by trying to parse it using ghostscript
         /// </summary>
@@ -62,7 +70,7 @@ namespace PostScriptValidator
         /// <returns>True for parseable postscript files</returns>
         public bool Validate(string pathToPsFile)
         {
-            string absolutePathToPsFile = getAbsoluteFilePath(pathToPsFile);
+            var absolutePathToPsFile = getAbsoluteFilePath(pathToPsFile);
 
             //https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
             var ghostScriptArguments = new[] { "-sDEVICE=nullpage -dNOPAUSE -dBATCH ", c_maskedQuote, absolutePathToPsFile, c_maskedQuote };
@@ -84,7 +92,7 @@ namespace PostScriptValidator
         /// <param name="pathToPdfFileWithEmbeddedFonts"></param>
         public void EmbedFonts(string pathToPdfFile, string pathToPdfFileWithEmbeddedFonts)
         {
-            string absolutePathToPdfFile = getAbsoluteFilePath(pathToPdfFile);
+            var absolutePathToPdfFile = getAbsoluteFilePath(pathToPdfFile);
 
             // https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290
 
@@ -153,14 +161,13 @@ namespace PostScriptValidator
             isInitilized = true;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-
                 lock (lockObject)
                 {
                     pathGhostscriptDirectory = Path.Combine(Path.GetTempPath(), "Ghostscript" + Guid.NewGuid());
                     Directory.CreateDirectory(pathGhostscriptDirectory);
 
-                    ExtractBinaryFromManifest("PostScriptValidator.gs9.27.zip");
-                    GhostscriptBinPath = Path.Combine(pathGhostscriptDirectory, @"gs9.27\bin", "gswin32c.exe");
+                    ExtractBinaryFromManifest("PostScriptValidator.gs9.50.zip");
+                    GhostscriptBinPath = Path.Combine(pathGhostscriptDirectory, @"gs9.50\bin", "gswin32c.exe");
 
                     isInitilized = true;
                 }
@@ -175,6 +182,7 @@ namespace PostScriptValidator
                 throw new NotImplementedException("Sorry, only supporting linux and windows.");
             }
         }
+
         private static string GetStreamOutput(StreamReader stream)
         {
             //Read output i<n separate task to avoid deadlocks
@@ -185,7 +193,7 @@ namespace PostScriptValidator
 
         private void ExtractBinaryFromManifest(string resourceName)
         {
-            var pathZipGhostscript = Path.Combine(pathGhostscriptDirectory, "gs9.27.zip");
+            var pathZipGhostscript = Path.Combine(pathGhostscriptDirectory, "gs9.50.zip");
             var assembly = Assembly.GetExecutingAssembly();
 
             using (var stream = assembly.GetManifestResourceStream(resourceName))
@@ -196,6 +204,7 @@ namespace PostScriptValidator
             }
             ZipFile.ExtractToDirectory(pathZipGhostscript, pathGhostscriptDirectory);
         }
+
         /// <summary>
         /// Disposing ghostscript bins
         /// </summary>

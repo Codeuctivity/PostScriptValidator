@@ -20,12 +20,13 @@ using (var postscriptValidator = new PostScriptValidator.PostScriptValidator())
 }
 ```
 
-# Dependencies
+## Dependencies
 
 Windows: 
-* none 
+
+*    The nuget package brings every depency
 
 Ubuntu: 
 ```bash
-suod apt install ghostscript
+sudo apt install ghostscript
 ```

@@ -24,17 +24,17 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PackageIcon>NugetIcon.png</PackageIcon>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="gs9.50.zip" />
+  </ItemGroup>
 
   <ItemGroup>
-    <None Remove="gs9.27.zip" />
+    <EmbeddedResource Include="gs9.50.zip" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="NugetIcon.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="gs9.27.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,7 +46,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
