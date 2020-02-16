@@ -54,7 +54,7 @@ namespace PostScriptValidator
         }
 
         /// <summary>
-        /// Use this constructor to use custom ghostscritp bins, e.g. for ubuntu 18.04 /usr/bin/gs
+        /// Use this constructor to use custom ghostscript bins, e.g. for ubuntu 18.04 /usr/bin/gs
         /// </summary>
         /// <param name="customPathToGhostscriptBin"></param>
         public PostScriptValidator(string customPathToGhostscriptBin)
@@ -67,7 +67,7 @@ namespace PostScriptValidator
         /// Validates a ps by trying to parse it using ghostscript
         /// </summary>
         /// <param name="pathToPsFile"></param>
-        /// <returns>True for parseable postscript files</returns>
+        /// <returns>True for parse able postscript files</returns>
         public bool Validate(string pathToPsFile)
         {
             var absolutePathToPsFile = getAbsoluteFilePath(pathToPsFile);
@@ -86,7 +86,7 @@ namespace PostScriptValidator
         }
 
         /// <summary>
-        /// Embedds fonts in pdf
+        /// Embeds fonts in pdf
         /// </summary>
         /// <param name="pathToPdfFile"></param>
         /// <param name="pathToPdfFileWithEmbeddedFonts"></param>

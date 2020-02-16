@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace PostScriptValidator
 {
     /// <summary>
-    /// Gets thrown if calls to ghostscript failes
+    /// Gets thrown if calls to ghostscript failed
     /// </summary>
     [Serializable]
     public class PostScriptValidatorException : Exception
@@ -15,6 +15,7 @@ namespace PostScriptValidator
         public PostScriptValidatorException()
         {
         }
+
         /// <summary>
         /// PostScriptValidatorException ctor
         /// </summary>
@@ -23,6 +24,7 @@ namespace PostScriptValidator
         public PostScriptValidatorException(string message) : base(message)
         {
         }
+
         /// <summary>
         /// PostScriptValidatorException ctor
         /// </summary>
@@ -32,6 +34,7 @@ namespace PostScriptValidator
         public PostScriptValidatorException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
         /// <summary>
         /// PostScriptValidatorException ctor
         /// </summary>

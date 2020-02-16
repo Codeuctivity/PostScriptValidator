@@ -4,7 +4,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c2e7bef317364aecbf9c0675a808c9e2)](https://www.codacy.com/manual/stesee/PostScriptValidator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Codeuctivity/PostScriptValidator&amp;utm_campaign=Badge_Grade)
 [![Nuget](https://img.shields.io/nuget/v/PostscriptValidator.svg)](https://www.nuget.org/packages/PostscriptValidator/)
 
-This project proofes that your postscript can be parsed by ghostscript. It wrapps call to ghostscript like proposed [here](https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290) . The nuget package contains ghostscript windows bins and uses preinstalled ghostscript when used in linux.  
+This project proves that your postscript can be parsed by ghostscript. It wraps call to ghostscript like proposed [here](https://stackoverflow.com/questions/258132/validating-a-postscript-without-trying-to-print-it#2981290) . The nuget package contains ghostscript windows bins and uses preinstalled ghostscript when used in linux.  
 
 ```PowerShell
 Install-Package PostscriptValidator
@@ -24,7 +24,7 @@ using (var postscriptValidator = new PostScriptValidator.PostScriptValidator())
 
 Windows: 
 
-*    The nuget package brings every depency
+*   The nuget package brings every dependency
 
 Ubuntu: 
 ```bash
