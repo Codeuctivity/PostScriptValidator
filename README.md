@@ -22,11 +22,12 @@ using (var postscriptValidator = new PostScriptValidator.PostScriptValidator())
 
 ## Dependencies
 
-Windows: 
+Windows:
 
-*   The nuget package brings every dependency
+* The nuget package brings every dependency
 
-Ubuntu: 
+Ubuntu:
+
 ```bash
 sudo apt install ghostscript
 ```
