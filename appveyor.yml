@@ -1,14 +1,15 @@
 version: 1.0.{build}
 image:
-  - Visual Studio 2019
   - Ubuntu
+  - Visual Studio 2019
 skip_tags: true
 configuration: Release
 before_build:
 - ps: >-
     nuget restore
 install:
-  - cinst ghostscript
+  - cmd: cinst ghostscript
+  - sh: sudo apt install ghostscript
 build:
   project: PostScriptValidator.sln
   verbosity: minimal
