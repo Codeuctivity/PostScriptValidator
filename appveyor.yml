@@ -9,7 +9,7 @@ before_build:
     nuget restore
 install:
   - cmd: cinst ghostscript
-  - sh: sudo apt install ghostscript
+  - sh: sudo apt install ghostscript -y
 build:
   project: PostScriptValidator.sln
   verbosity: minimal
