@@ -7,6 +7,7 @@ configuration: Release
 before_build:
 - ps: >-
     nuget restore
+
 install:
   - cmd: cinst ghostscript
   - sh: sudo apt install ghostscript -y
