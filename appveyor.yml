@@ -4,6 +4,9 @@ image:
   - Ubuntu
 skip_tags: true
 configuration: Release
+before_build:
+- ps: >-
+    nuget restore
 build:
   project: PostScriptValidator.sln
   verbosity: minimal
