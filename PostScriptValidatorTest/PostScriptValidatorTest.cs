@@ -1,4 +1,3 @@
-using System.IO;
 using NUnit.Framework;
 
 namespace Tests
@@ -14,6 +13,7 @@ namespace Tests
                 Assert.True(result);
             }
         }
+
         [Test]
         public void ShouldDetectNonCompliantPostscript()
         {
@@ -23,11 +23,20 @@ namespace Tests
                 Assert.False(result);
             }
         }
+
         [Test]
         public void ShouldNotFailOnMultipleDisposeCalls()
         {
             var postscriptValidator = new PostScriptValidator.PostScriptValidator();
             postscriptValidator.Validate(@"./TestData/valid.ps");
+            postscriptValidator.Dispose();
+            postscriptValidator.Dispose();
+        }
+
+        [Test]
+        public void ShouldNotFailOnMultipleDisposeWithoutEvenUsingOnceCalls()
+        {
+            var postscriptValidator = new PostScriptValidator.PostScriptValidator();
             postscriptValidator.Dispose();
             postscriptValidator.Dispose();
         }
